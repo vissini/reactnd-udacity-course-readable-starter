@@ -1,5 +1,256 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Open Sans",sans-serif;
+  color: #58646d;
+  background-color: #fafbfc;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (min-width: 768px) {
+  .container {
+      width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+      width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+.clearfix {
+  clear: both;
+}
+
+.header-top {
+  border-bottom: solid 1px #dbe2e8;
+}
+.header-top img.logo {
+  max-width: 250px;
+  margin: 1rem;
+  float: right;
+}
+.header-top h1.title {
+  float: left;
+}
+.header-top h1.title a {
+  text-decoration: none;
+  color: #02b3e4;
+}
+
+.categories {
+  padding: 1rem 0;
+  border: solid 1px #dbe2e8;
+  border-top: 0;
+}
+
+.categories > a,
+.categories > a:hover,
+.categories > a:active {
+  max-width: 200px;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  color: #02b3e4;
+}
+
+.categories > a.active,
+.categories > a:hover {
+  background: #eee;
+  color: #2e3d49;
+}
+
+.categories > a:first-child {
+/*  padding-left: 0;*/
+}
+
+.post {
+  box-shadow: 0 0 10px 2px rgba(0,0,0,0.18) !important;
+  margin-bottom: 15px;
+}
+
+.post section {
+  padding: 1.5em;
+}
+
+.post h2,
+.post h4,
+.post h5 {
+  margin: 0;
+  padding: 0;
+}
+.post h5 {
+  font-family: 'Open Sans' !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  letter-spacing: 1px !important;
+  color: #7d97ad !important;
+  text-transform: uppercase !important;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+
+.post .votes {
+  float: left;
+}
+.post .actions {
+  float: right;
+}
+
+.post .content {
+  border-bottom: solid 1px #dbe2e8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.post .content:hover {
+  background: rgba(219, 226, 232, 0.4);
+}
+
+#actions {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+button.primary {
+  color: #fff;
+  background-color: #02b3e4;
+  border: 0.125rem solid transparent;
+  display: block;
+  cursor: pointer;
+  appearance: none;
+  user-select: none;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: top;
+  text-decoration: none;
+  vertical-align: middle;
+  height: 3rem;
+  padding: 0 2.5rem;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  -webkit-font-smoothing: antialiased;
+  border-radius: 0.25rem;
+  letter-spacing: 0.08375rem;
+  transition: all 0.3s ease;
+  float: left;
+  margin-right: 1rem;
+}
+
+button.primary:hover {
+  box-shadow: 2px 4px 8px 0px rgba(46,61,73,0.2);
+  outline: none;
+  color: white;
+  border-color: transparent;
+  background-color: #029fcb;
+}
+
+/* loading */
+
+@keyframes spinContainer {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(540deg);
+  }
+  100% {
+    transform: rotate(1080deg);
+  }
+}
+@keyframes spinProgress {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.loading-wrapper {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, .9);
+  z-index: 200;
+}
+.body-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.loading {
+  text-align: left;
+  display: block;
+  height: 40px;
+  position: relative;
+  width: 40px;
+}
+.loading.center {
+  margin: auto auto;
+}
+.loading.margin {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.loading strong {
+  border: 3px solid #dbe2e8;
+  border-radius: 50%;
+  box-sizing: border-box;
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  text-indent: -999em;
+  width: 100%;
+}
+.loading span {
+  animation: spinContainer 3s linear infinite;
+  clip: rect(0, 42px, 42px, 21px);
+  display: block;
+  height: 100%;
+  position: absolute;
+  transform: rotate(0deg);
+  width: 100%;
+}
+.loading i {
+  animation: spinProgress 3s ease-in infinite;
+  border: 3px solid #02b3e4;
+  border-radius: 50%;
+  box-sizing: border-box;
+  clip: rect(0, 21px, 42px, 0);
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  text-indent: -999em;
+  transform: rotate(0deg);
+  width: 100%;
 }
