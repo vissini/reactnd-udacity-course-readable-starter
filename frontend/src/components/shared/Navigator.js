@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {capitalizeFirstLetter} from '../../utils'
 
+import './Navigator.css'
+
 export default class Navigator extends Component {
   render () {
     const categories = this.props.categories || []

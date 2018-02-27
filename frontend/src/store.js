@@ -1,8 +1,8 @@
-import {createStore, compose, applyMiddleware} from 'redux';
-import thunk from 'redux-thunk';
-import {routerMiddleware} from 'react-router-redux';
+import {createStore, compose, applyMiddleware} from 'redux'
+import thunk from 'redux-thunk'
+import {routerMiddleware} from 'react-router-redux'
 
-import reducers from './reducers';
+import reducers from './reducers'
 import api from './services/api'
 
 const services = {

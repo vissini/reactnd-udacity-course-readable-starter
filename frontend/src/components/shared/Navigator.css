@@ -1,0 +1,42 @@
+.header-top {
+  border-bottom: solid 1px #dbe2e8;
+}
+.header-top img.logo {
+  max-width: 250px;
+  margin: 1rem;
+  float: right;
+}
+.header-top h1.title {
+  float: left;
+  margin-top: 1.3rem;
+  font-size: 1.8em;
+}
+.header-top h1.title a {
+  text-decoration: none;
+  color: #02b3e4;
+}
+
+.categories {
+  padding: 1rem 0;
+  border: solid 1px #dbe2e8;
+  border-top: 0;
+}
+
+.categories > a,
+.categories > a:hover,
+.categories > a:active {
+  max-width: 200px;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  color: #02b3e4;
+}
+
+.categories > a.active,
+.categories > a:hover {
+  background: #eee;
+  color: #2e3d49;
+}
+
+.categories > a:first-child {
+/*  padding-left: 0;*/
+}

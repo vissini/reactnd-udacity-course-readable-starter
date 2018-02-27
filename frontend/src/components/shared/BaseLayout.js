@@ -5,7 +5,7 @@ import Footer from './Footer'
 import {Link, Route} from 'react-router-dom'
 
 const BaseLayout = (props) => {
-  const { component: Component, ...rest } = props
+  const { component: Component, computedMatch: match, ...rest } = props
   return (
     <Route {...rest} render={matchProps => {
       return (
@@ -21,7 +21,7 @@ const BaseLayout = (props) => {
           </header>
           <main>
             <div className="container">
-              {props.categories && (<Navigator categories={props.categories} currentCategory={props.currentCategory} />)}
+              {props.categories && (<Navigator categories={props.categories} currentCategory={match.params.category} />)}
               <Component {...matchProps} />
             </div>
           </main>
@@ -30,6 +30,6 @@ const BaseLayout = (props) => {
       )}
      } />
   )
-};
+}
 
-export default BaseLayout;
+export default BaseLayout
