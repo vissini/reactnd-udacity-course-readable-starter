@@ -9,9 +9,9 @@ export function getCategories () {
 
     try {
       const categories = await services.api.getCategories()
-      dispatch({ type: RECEIVE_CATEGORIES, categories: categories })
+      return dispatch({ type: RECEIVE_CATEGORIES, categories: categories })
     } catch (err) {
-      dispatch({ type: ERROR_RECEIVING_CATEGORIES, error: err.message, categories: [] })
+      return dispatch({ type: ERROR_RECEIVING_CATEGORIES, error: err.message, categories: [] })
     }
   }
 }

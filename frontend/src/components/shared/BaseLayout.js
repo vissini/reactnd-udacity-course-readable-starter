@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
 import Navigator from './Navigator'
 import Footer from './Footer'
@@ -26,10 +27,17 @@ const BaseLayout = (props) => {
             </div>
           </main>
           <Footer/>
+          <div style={{ display: props.isModalOpen ? 'block' : 'none' }} className={`modal-backdrop fade ${props.isModalOpen ? 'show' : '' }`}></div>
         </div>
       )}
      } />
   )
 }
 
-export default BaseLayout
+function mapStateToProps ({ modal }) {
+  return {
+    isModalOpen: modal.isOpen
+  }
+}
+
+export default connect(mapStateToProps)(BaseLayout)

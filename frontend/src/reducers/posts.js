@@ -2,9 +2,6 @@ import {
   REQUEST_POSTS,
   RECEIVE_POSTS,
   ERROR_RECEIVING_POSTS,
-  REQUEST_POST_BY_ID,
-  RECEIVE_POST_BY_ID,
-  ERROR_RECEIVING_POST_BY_ID,
   UPDATING_POST,
   UPDATE_POST_SUCCESS,
   UPDATE_POST_ERROR
@@ -12,6 +9,7 @@ import {
 
 const initialState = {
   loading: false,
+  currentPost: null,
   list: {
     result: [],
     entities: {
@@ -35,11 +33,6 @@ export default (state = initialState, action) => {
         loading: false,
         list: action.posts,
         error: action.error
-      }
-    case REQUEST_POST_BY_ID:
-      return {
-        ...state,
-        loading: true
       }
     case UPDATING_POST:
       return {
@@ -78,14 +71,6 @@ export default (state = initialState, action) => {
           }
         },
         updatingList: state.updatingList.filter(id => id !== action.id)
-      }
-    case RECEIVE_POST_BY_ID:
-    case ERROR_RECEIVING_POST_BY_ID:
-      return {
-        ...state,
-        loading: false,
-        post: action.post,
-        error: action.error
       }
     default:
       return state

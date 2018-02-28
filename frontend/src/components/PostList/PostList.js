@@ -1,11 +1,11 @@
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 
 import './PostList.css'
 
 import {
-  getPostsByCategory,
+  getPosts,
   removePost,
   updatePost,
   upVotePost,
@@ -24,11 +24,17 @@ class PostList extends Component {
       showModalCreatePost: false,
       showModalUpdatePost: false,
       isLoadingModalCreatePost: false,
-      postToUpdate: null
+      postToUpdate: null,
+      sortBy: null
     }
   }
+  toggleSort (sortBy) {
+    this.setState({
+      sortBy: this.state.sortBy === sortBy ? null : sortBy
+    })
+  }
   componentDidMount () {
-    this.props.getPostsByCategory()
+    this.props.getPosts()
   }
   openModalCreatePost = () => {
     this.setState({
@@ -42,7 +48,7 @@ class PostList extends Component {
     })
   }
   createNewPost = (params) => {
-    const { getPostsByCategory } = this.props
+    const { getPosts } = this.props
     this.setState({
       isLoadingModalCreatePost: true
     })
@@ -50,7 +56,7 @@ class PostList extends Component {
     api.createPost(params)
       .then(() => {
         this.setState({ showModalCreatePost: false, isLoadingModalCreatePost: false })
-        getPostsByCategory()
+        getPosts()
       })
       .catch((err) => {
         this.setState({
@@ -80,28 +86,44 @@ class PostList extends Component {
       upVotePost,
       downVotePost
     } = this.props
+    const {sortBy} = this.state
 
-    const postList = posts.result
+    const postList = (posts.result || [])
       .filter(id => posts.entities.post[id].category === currentCategory || !currentCategory)
 
     return (
       <div>
-        {this.state.showModalCreatePost && (<ModalCreatePost
-          isLoading={this.state.isLoadingModalCreatePost}
-          isOpen={this.state.showModalCreatePost}
-          onClose={() => this.setState({ showModalCreatePost: false })}
-          categories={categories}
-          onSubmit={(params) => this.createNewPost(params)}/>)}
-        {this.state.showModalUpdatePost && (<ModalUpdatePost
-          isLoading={this.state.isLoadingModalUpdatePost}
-          isOpen={this.state.showModalUpdatePost}
-          post={this.state.postToUpdate}
-          onClose={() => this.setState({ showModalUpdatePost: false })}
-          categories={categories}
-          onSubmit={(params) => this.updatePost(params)}/>)}
+        {this.state.showModalCreatePost && (
+          <ModalCreatePost
+            isLoading={this.state.isLoadingModalCreatePost}
+            isOpen={this.state.showModalCreatePost}
+            onClose={() => this.setState({ showModalCreatePost: false }) }
+            categories={categories}
+            onSubmit={(params) => this.createNewPost(params)}/>
+        )}
+        {this.state.showModalUpdatePost && (
+          <ModalUpdatePost
+            isLoading={this.state.isLoadingModalUpdatePost}
+            isOpen={this.state.showModalUpdatePost}
+            post={this.state.postToUpdate}
+            onClose={() => this.setState({ showModalUpdatePost: false }) }
+            categories={categories}
+            onSubmit={(params) => this.updatePost(params)}/>
+        )}
 
         <TopActions actions={[
-          { label: 'Create new post', onClick: this.openModalCreatePost }
+          { label: 'Create new post', onClick: this.openModalCreatePost },
+          {
+            group: [
+              { label: 'Sort by date', class: sortBy !== 'date' ? 'btn-info' : 'btn-dark', active: sortBy === 'date', onClick: () => {
+                this.toggleSort('date')
+              } },
+              { label: 'Sort by votes count', class: sortBy !== 'votes' ? 'btn-info' : 'btn-dark', active: sortBy === 'votes', onClick: () => {
+                this.toggleSort('votes')
+              } }
+            ],
+            float: 'right'
+          }
         ]}/>
 
         {(loading && !error) && (
@@ -114,12 +136,22 @@ class PostList extends Component {
         )}
         {error && (<h3 style={{color: 'red', textAlign: 'center'}}>Error - {error}</h3>)}
         {!loading && 
-          postList.map(id => {
-            const post = posts.entities.post[id]
+          posts.result
+          .map(id => posts.entities.post[id])
+          .filter(post => currentCategory ? post.category === currentCategory : true)
+          .sort((a, b) => {
+            if (sortBy === 'date') {
+              return a.timestamp < b.timestamp ? 1 : -1
+            } else if (sortBy === 'votes') {
+              return a.voteScore < b.voteScore ? 1 : -1
+            }
+            return -1
+          })
+          .map(post => {
             return (
               <section key={post.id} id="posts" className="post">
                 {
-                  updating.indexOf(id) > -1 &&
+                  updating.indexOf(post.id) > -1 &&
                   (
                     <div className="body-loading loading-content">
                       <div className="loading center">
@@ -132,21 +164,30 @@ class PostList extends Component {
                   )
                 }
                 <article>
-                  <section className="content">
-                    <header>
-                      <h2>{post.title}</h2>
-                      <h5>{post.author}</h5>
-                    </header>
-                    <h4>{post.commentCount} comment{post.commentCount !== 1 ? 's' : ''}</h4>
-                    <h4>Score: {post.voteScore}</h4>
-                  </section>
+                  <Link to={`/${post.category}/${post.id}`}>
+                    <section className="content">
+                      <header>
+                        <h2>{post.title}</h2>
+                        <h5>{post.author}</h5>
+                      </header>
+                      <h4>{post.commentCount} comment{post.commentCount !== 1 ? 's' : ''}</h4>
+                      <h4>Score: {post.voteScore}</h4>
+                    </section>
+                  </Link>
                   <section className="votes">
-                    <button className="primary" onClick={() => upVotePost(id)}>Up vote</button>
-                    <button className="primary" onClick={() => downVotePost(id)}>Down vote</button>
+                    <div className="btn-group float-right">
+                      <button className="btn btn-info" onClick={() => upVotePost(post.id)}>
+                        Up vote<span className="oi" data-glyph="thumb-up" style={{marginLeft: '0.5rem'}}/>
+                      </button>
+                      <button className="btn btn-info" onClick={() => downVotePost(post.id)}>
+                        Down vote<span className="oi" data-glyph="thumb-down" style={{marginLeft: '0.5rem'}}/>
+                      </button>
+                    </div>
+                    <div className="clearfix"></div>
                   </section>
                   <section className="actions">
-                    <button className="primary" onClick={() => this.openModalUpdatePost(post)}>Edit</button>
-                    <button className="primary" onClick={() => this.removePost(post)}>Delete</button>
+                    <button className="btn primary" onClick={() => this.openModalUpdatePost(post)}>Edit</button>
+                    <button className="btn btn-danger" onClick={() => this.removePost(post)}>Delete</button>
                   </section>
                   <div className="clearfix"></div>
                 </article>
@@ -154,7 +195,6 @@ class PostList extends Component {
             )
         })}
         {!loading && !error && !postList.length && (<h3 style={{textAlign: 'center'}}>No posts found in this category</h3>)}
-        <div  style={{ display: (this.state.showModalCreatePost || this.state.showModalUpdatePost) ? 'block' : 'none' }} className={`modal-backdrop fade ${(this.state.showModalCreatePost || this.state.showModalUpdatePost) ? 'show' : '' }`}></div>
       </div>
     )
   }
@@ -177,7 +217,7 @@ function mapDispatchToProps (dispatch) {
     updatePost: (id, data) => dispatch(updatePost(id, data)),
     upVotePost: id => dispatch(upVotePost(id)),
     downVotePost: id => dispatch(downVotePost(id)),
-    getPostsByCategory: category => dispatch(getPostsByCategory(category))
+    getPosts: category => dispatch(getPosts(category))
   }
 }
 

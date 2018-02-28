@@ -38,6 +38,16 @@
   transition: all 0.3s ease;
 }
 
+.post a,
+.post a:hover {
+  text-decoration: none;
+  color: #58646d;
+}
+
+.post a h2 {
+  color: #02b3e4;
+}
+
 .post .content:hover {
   background: rgba(219, 226, 232, 0.4);
 }

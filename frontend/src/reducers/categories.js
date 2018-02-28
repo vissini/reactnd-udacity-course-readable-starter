@@ -3,7 +3,7 @@ import {
 } from '../actions/categories'
 
 const initialState = {
-  loading: false,
+  loading: true,
   list: []
 }
 

@@ -21,7 +21,7 @@ class App extends Component {
     return (
       this.props.loading ? (<div>Loading ...</div>) : (
         <Switch>
-          <BaseLayout exact path="/:category/:post" component={PostDetails} {...this.props}/>
+          <BaseLayout exact path="/:category/:postId" component={PostDetails} {...this.props}/>
           <BaseLayout exact path="/:category" component={PostList} {...this.props}/>
           <BaseLayout exact path="/" component={PostList} {...this.props}/>
           <BaseLayout path="*" component={PageNotFound} {...this.props}/>
@@ -31,11 +31,11 @@ class App extends Component {
   }
 }
 
-function mapStateToProps (state = {}, props) {
+function mapStateToProps ({ categories }, props) {
   return {
-    loading: state.categories.loading,
-    categories: state.categories.list,
-    error: state.categories.error
+    loading: categories.loading,
+    categories: categories.list,
+    error: categories.error
   }
 }
 

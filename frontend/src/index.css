@@ -9,9 +9,14 @@ body {
   min-height: 100vh;
 }
 
-body::-webkit-scrollbar { 
-  display: none; 
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
+
 
 .container {
   margin-right: auto;
@@ -47,31 +52,51 @@ body::-webkit-scrollbar {
   margin-bottom: 25px;
 }
 
-button.primary {
-  color: #fff;
-  background-color: #02b3e4;
-  border: 0.125rem solid transparent;
+.sub-title {
+  color: #02b3e4;
+}
+
+a.card-link {
+  color: #02b3e4 !important;
+  cursor: pointer;
+}
+
+button,
+button.active,
+button:focus,
+button.active:focus {
+  outline: none !important
+}
+
+button.btn {
   display: block;
   cursor: pointer;
-  appearance: none;
   user-select: none;
   text-align: center;
   white-space: nowrap;
-  vertical-align: top;
   text-decoration: none;
-  vertical-align: middle;
   height: 3rem;
-  padding: 0 2.5rem;
+  padding: 0 2.5rem !important;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 16px !important;
   font-weight: 400;
-  font-size: 0.8125rem;
+  font-size: 0.8125rem !important;
   -webkit-font-smoothing: antialiased;
   border-radius: 0.25rem;
   letter-spacing: 0.08375rem;
   transition: all 0.3s ease;
   float: left;
-  margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+button.primary {
+  color: #fff;
+  background-color: #02b3e4;
+  border: 0.125rem solid transparent;
+}
+
+* button:first-child {
+  margin-left: 0;
 }
 
 button.primary:hover {
