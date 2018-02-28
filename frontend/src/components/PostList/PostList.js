@@ -4,13 +4,7 @@ import {Link, withRouter} from 'react-router-dom'
 
 import './PostList.css'
 
-import {
-  getPosts,
-  removePost,
-  updatePost,
-  upVotePost,
-  downVotePost
-} from '../../actions/posts'
+import * as actionsPost from '../../actions/posts'
 import TopActions from '../shared/TopActions'
 import ModalCreatePost from '../shared/ModalCreatePost'
 import ModalUpdatePost from '../shared/ModalUpdatePost'
@@ -211,14 +205,4 @@ function mapStateToProps ({ categories, posts }, props) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    removePost: id => dispatch(removePost(id)),
-    updatePost: (id, data) => dispatch(updatePost(id, data)),
-    upVotePost: id => dispatch(upVotePost(id)),
-    downVotePost: id => dispatch(downVotePost(id)),
-    getPosts: category => dispatch(getPosts(category))
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostList))
+export default withRouter(connect(mapStateToProps, actionsPost)(PostList))

@@ -31,7 +31,7 @@ class App extends Component {
   }
 }
 
-function mapStateToProps ({ categories }, props) {
+function mapStateToProps ({ categories }) {
   return {
     loading: categories.loading,
     categories: categories.list,
@@ -39,10 +39,4 @@ function mapStateToProps ({ categories }, props) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    getCategories: () => dispatch(getCategories()),
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+export default withRouter(connect(mapStateToProps, { getCategories })(App))

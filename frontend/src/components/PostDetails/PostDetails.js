@@ -3,12 +3,7 @@ import {connect} from 'react-redux'
 
 import api from '../../services/api'
 import {randomString} from '../../utils'
-import {
-  removePost,
-  updatePost,
-  upVotePost,
-  downVotePost
-} from '../../actions/posts'
+import * as actionsPost from '../../actions/posts'
 import TopActions from '../shared/TopActions'
 import ModalCreatePost from '../shared/ModalCreatePost'
 import ModalUpdatePost from '../shared/ModalUpdatePost'
@@ -482,13 +477,4 @@ function mapStateToProps ({ categories }) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    removePost: id => dispatch(removePost(id)),
-    updatePost: (id, data) => dispatch(updatePost(id, data)),
-    upVotePost: id => dispatch(upVotePost(id)),
-    downVotePost: id => dispatch(downVotePost(id))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(PostDetails)
+export default connect(mapStateToProps, actionsPost)(PostDetails)
